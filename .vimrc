@@ -26,6 +26,8 @@ Plugin 'majutsushi/tagbar'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'pangloss/vim-javascript'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'kchmck/vim-coffee-script'
+Plugin 'w0rp/ale'
 " plugin from http://vim-scripts.org/vim/scripts.html
 
 " All of your Plugins must be added before the following line
@@ -90,3 +92,21 @@ autocmd BufWinLeave * call clearmatches()
 :nnoremap <Leader>. :TagbarToggle<CR>
 :nnoremap tt i{% trans "" %}<Esc>3<left>i
 :nnoremap <Leader>f :NERDTreeFind<CR>
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+let g:syntastic_python_checkers = ['pylint']
+
+hi Search cterm=NONE ctermfg=black ctermbg=green
+
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'css': ['prettier'],
+\}
+let g:ale_fix_on_save = 1

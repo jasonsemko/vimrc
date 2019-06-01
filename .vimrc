@@ -110,3 +110,9 @@ let g:ale_fixers = {
 \   'css': ['prettier'],
 \}
 let g:ale_fix_on_save = 1
+
+function Isort()
+  call system('isort ' . expand('%:p'))
+  e
+endfunction
+autocmd BufWritePost *.py call Isort()

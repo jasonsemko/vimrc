@@ -13,7 +13,7 @@ Plugin 'kien/ctrlp.vim'
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 " plugin on GitHub repo
-Plugin 'scrooloose/syntastic'
+" Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'scrooloose/nerdtree'
@@ -27,7 +27,7 @@ Plugin 'Lokaltog/vim-powerline'
 Plugin 'pangloss/vim-javascript'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'kchmck/vim-coffee-script'
-Plugin 'w0rp/ale'
+Plugin 'dense-analysis/ale'
 " plugin from http://vim-scripts.org/vim/scripts.html
 
 " All of your Plugins must be added before the following line
@@ -72,7 +72,7 @@ autocmd Filetype ruby setlocal tabstop=2|setl shiftwidth=2|setl softtabstop=2
 
 
 colorscheme leo
-set colorcolumn=80
+set colorcolumn=100
 " set statusline=%{fugitive#statusline()} - this wasn't show the file name
 highlight ColorColumn ctermbg=2*
 
@@ -90,21 +90,22 @@ autocmd BufWinLeave * call clearmatches()
 :nnoremap <Leader>b :Gblame<CR>
 :nnoremap <Leader>l :Glog<CR>
 :nnoremap <Leader>. :TagbarToggle<CR>
-:nnoremap tt i{% trans "" %}<Esc>3<left>i
+:nnoremap <Leader>p oimport pudb; pudb.set_trace()<Esc>
 :nnoremap <Leader>f :NERDTreeFind<CR>
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_checkers = ['pylint']
+" let g:syntastic_always_populate_loc_list = 1
+" let g:syntastic_auto_loc_list = 1
+" let g:syntastic_check_on_open = 1
+" let g:syntastic_check_on_wq = 0
+" let g:syntastic_python_checkers = ['pylint']
 
 hi Search cterm=NONE ctermfg=black ctermbg=green
 
+let g:ale_linters = {'python': ['pylint', 'pycodestyle']}
 let g:ale_fixers = {
 \   'javascript': ['prettier'],
 \   'css': ['prettier'],
@@ -115,4 +116,4 @@ function Isort()
   call system('isort ' . expand('%:p'))
   e
 endfunction
-autocmd BufWritePost *.py call Isort()
+" autocmd BufWritePost *.py call Isort()

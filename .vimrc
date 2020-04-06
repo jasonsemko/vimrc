@@ -1,49 +1,237 @@
-syntax on
-set nu
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" Specify a directory for plugins
+call plug#begin('~/.vim/plugged')
 
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'scrooloose/nerdtree'
+"Plug 'tsony-tsonev/nerdtree-git-plugin'
+"Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'itchyny/lightline.vim'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
+Plug 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-unimpaired'
+Plug 'kchmck/vim-coffee-script'
+Plug 'dense-analysis/ale'
+Plug 'ap/vim-css-color'
+" Plug 'ycm-core/YouCompleteMe'
+Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
+"Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
-Plugin 'kien/ctrlp.vim'
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-" plugin on GitHub repo
-" Plugin 'scrooloose/syntastic'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'Raimondi/delimitMate'
-Plugin 'mattn/emmet-vim'
-Plugin 'flazz/vim-colorschemes'
-Plugin 'valloric/youcompleteme'
-Plugin 'majutsushi/tagbar'
-Plugin 'Lokaltog/vim-powerline'
-Plugin 'pangloss/vim-javascript'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'kchmck/vim-coffee-script'
-Plugin 'dense-analysis/ale'
-" plugin from http://vim-scripts.org/vim/scripts.html
+Plug 'neoclide/coc-python.nvim'
+Plug 'morhetz/gruvbox'
+Plug 'tomasr/molokai'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line"
+" Initialize plugin system
+call plug#end()
+
+inoremap jk <ESC>
+nmap <C-n> :NERDTreeToggle<CR>
+vmap ++ <plug>NERDCommenterToggle
+nmap ++ <plug>NERDCommenterToggle
+
+" open NERDTree automatically
+"autocmd StdinReadPre * let s:std_in=1
+"autocmd VimEnter * NERDTree
+
+let g:NERDTreeGitStatusWithFlags = 1
+"let g:WebDevIconsUnicodeDecorateFolderNodes = 1
+"let g:NERDTreeGitStatusNodeColorization = 1
+"let g:NERDTreeColorMapCustom = {
+    "\ "Staged"    : "#0ee375",
+    "\ "Modified"  : "#d9bf91",
+    "\ "Renamed"   : "#51C9FC",
+    "\ "Untracked" : "#FCE77C",
+    "\ "Unmerged"  : "#FC51E6",
+    "\ "Dirty"     : "#FFBD61",
+    "\ "Clean"     : "#87939A",
+    "\ "Ignored"   : "#808080"
+    "\ }
+
+
+set swapfile
+set dir=~/.swap-files
+set runtimepath^=~/src/coc-test
+
+let g:NERDTreeIgnore = ['^node_modules$']
+
+" vim-prettier
+"let g:prettier#quickfix_enabled = 0
+"let g:prettier#quickfix_auto_focus = 0
+" prettier command for coc
+" command! -nargs=0 Prettier :CocCommand prettier.formatFile
+" run prettier on save
+"let g:prettier#autoformat = 0
+"autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue,*.yaml,*.html PrettierAsync
+
+
+" ctrlp
+let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+
+set number
+
+set smarttab
+set cindent
+set tabstop=2
+set shiftwidth=2
+" always uses spaces instead of tab characters
+set expandtab
+
+" colorscheme gruvbox
+colorscheme gruvbox
+
+" sync open file with NERDTree
+" " Check if NERDTree is open or active
+function! IsNERDTreeOpen()
+  return exists("t:NERDTreeBufName") && (bufwinnr(t:NERDTreeBufName) != -1)
+endfunction
+
+" Call NERDTreeFind iff NERDTree is active, current window contains a modifiable
+" file, and we're not in vimdiff
+function! SyncTree()
+  if &modifiable && IsNERDTreeOpen() && strlen(expand('%')) > 0 && !&diff
+    NERDTreeFind
+    wincmd p
+  endif
+endfunction
+
+" Highlight currently open buffer in NERDTree
+" autocmd BufEnter * call SyncTree()
+
+" coc config
+let g:coc_global_extensions = ['coc-python', 'coc-eslint', 'coc-prettier']
+"  \ 'coc-snippets',
+"  \ 'coc-pairs',
+"  \ 'coc-tsserver',
+"  \ 'coc-eslint',
+"  \ 'coc-prettier',
+"  \ 'coc-json',
+" from readme
+" if hidden is not set, TextEdit might fail.
+set hidden " Some servers have issues with backup files, see #649 set nobackup set nowritebackup " Better display for messages set cmdheight=2 " You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=300
+
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+
+" always show signcolumns
+set signcolumn=yes
+
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+" Use <c-space> to trigger completion.
+" inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+" nmap <silent> [g <Plug>(coc-diagnostic-prev)
+" nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+" nmap <silent> gd <Plug>(coc-definition)
+" nmap <silent> gy <Plug>(coc-type-definition)
+" nmap <silent> gi <Plug>(coc-implementation)
+" nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+" autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+" nmap <F2> <Plug>(coc-rename)
+
+" Remap for format selected region
+" xmap <leader>f  <Plug>(coc-format-selected)
+" nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  " autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  " autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+" xmap <leader>a  <Plug>(coc-codeaction-selected)
+" nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+" nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+" nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Create mappings for function text object, requires document symbols feature of languageserver.
+" xmap if <Plug>(coc-funcobj-i)
+" xmap af <Plug>(coc-funcobj-a)
+" omap if <Plug>(coc-funcobj-i)
+" omap af <Plug>(coc-funcobj-a)
+
+" Use <C-d> for select selections ranges, needs server support, like: coc-tsserver, coc-python
+" nmap <silent> <C-d> <Plug>(coc-range-select)
+" xmap <silent> <C-d> <Plug>(coc-range-select)
+
+" Use `:Format` to format current buffer
+" command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+" command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" use `:OR` for organize import of current buffer
+" command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Add status line support, for integration with other plugin, checkout `:h coc-status`
+" set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
+
+" Using CocList
+" Show all diagnostics
+" nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+" nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+" nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+" nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+" nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+" nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+" nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+" nnoremap <silent> <space>p  :<C-u>CocListResume<CR>
+
+
+
+
 nnoremap <C-m> :NERDTreeToggle<CR>
 let mapleader = ","
 let g:ctrlp_custom_ignore = {
@@ -61,8 +249,6 @@ set smartcase
 set hlsearch
 set backspace=2
 set laststatus=2
-set foldmethod=indent  "Code folding
-"set statusline=%F%m%r%h%w\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 
 autocmd FileType python setl tabstop=4|setl shiftwidth=4|setl softtabstop=4
 autocmd FileType html setl tabstop=2|setl shiftwidth=2|setl softtabstop=2
@@ -70,8 +256,10 @@ autocmd FileType javascript setl tabstop=2|setl shiftwidth=2|setl softtabstop=2
 autocmd FileType css setl tabstop=2|setl shiftwidth=2|setl softtabstop=2
 autocmd Filetype ruby setlocal tabstop=2|setl shiftwidth=2|setl softtabstop=2
 
+" autocmd FileType python let b:coc_root_patterns = ['.git', '.env']
 
-colorscheme leo
+let g:NERDTreeNodeDelimiter = "\u00a0"
+
 set colorcolumn=100
 " set statusline=%{fugitive#statusline()} - this wasn't show the file name
 highlight ColorColumn ctermbg=2*
@@ -82,10 +270,11 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
+autocmd QuickFixCmdPost *grep* cwindow | resize 25
 
 " Mappings
-:nnoremap <Leader>s :sp\|Ggrep <C-R><C-W><CR>
-:nnoremap <Leader>g :sp\|Ggrep<Space>
+:nnoremap <Leader>s :vsplit\|Ggrep <C-R><C-W><CR>
+:nnoremap <Leader>g :vsplit\|Ggrep<Space>
 :vnoremap <Leader>v "jy:tab\|Ggrep "<C-R>j"<CR>
 :nnoremap <Leader>b :Gblame<CR>
 :nnoremap <Leader>l :Glog<CR>
@@ -93,27 +282,18 @@ autocmd BufWinLeave * call clearmatches()
 :nnoremap <Leader>p oimport pudb; pudb.set_trace()<Esc>
 :nnoremap <Leader>f :NERDTreeFind<CR>
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+let g:ale_fixers = {}
+let g:ale_fixers.javascript = ['eslint', 'prettier']
+let g:ale_fix_on_save = 1
 
-" let g:syntastic_always_populate_loc_list = 1
-" let g:syntastic_auto_loc_list = 1
-" let g:syntastic_check_on_open = 1
-" let g:syntastic_check_on_wq = 0
-" let g:syntastic_python_checkers = ['pylint']
+" set statusline+=%#warningmsg#
+" set statusline+=%*
+" set statusline+=%F
+set tags^=./.git/tags
+set cursorline
 
 hi Search cterm=NONE ctermfg=black ctermbg=green
 
-let g:ale_linters = {'python': ['pylint', 'pycodestyle']}
-let g:ale_fixers = {
-\   'javascript': ['prettier'],
-\   'css': ['prettier'],
-\}
-let g:ale_fix_on_save = 1
-
-function Isort()
-  call system('isort ' . expand('%:p'))
-  e
-endfunction
-" autocmd BufWritePost *.py call Isort()
+let g:python_host_prog = '/usr/bin/python'
+let g:python3_host_prog = '/usr/local/bin/python3'
+let g:omni_sql_no_default_maps = 1

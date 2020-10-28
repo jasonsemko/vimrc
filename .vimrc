@@ -1,6 +1,7 @@
 " Specify a directory for plugins
 call plug#begin('~/.vim/plugged')
 
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree'
 "Plug 'tsony-tsonev/nerdtree-git-plugin'
@@ -9,21 +10,32 @@ Plug 'itchyny/lightline.vim'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
 Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
+
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'kchmck/vim-coffee-script'
 Plug 'dense-analysis/ale'
 Plug 'ap/vim-css-color'
+Plug 'janko/vim-test'
+Plug 'pangloss/vim-javascript'
 " Plug 'ycm-core/YouCompleteMe'
+
+" COLORS
+Plug 'morhetz/gruvbox'
+Plug 'tomasr/molokai'
+Plug 'drewtempelmeyer/palenight.vim'
+Plug 'nanotech/jellybeans.vim'
+Plug 'mhartington/oceanic-next'
+Plug 'ParamagicDev/vim-medic_chalk'
+
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 "Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
-Plug 'neoclide/coc-python.nvim'
-Plug 'morhetz/gruvbox'
-Plug 'tomasr/molokai'
-
 " Initialize plugin system
 call plug#end()
+
+colorscheme medic_chalk
+set background=dark
 
 inoremap jk <ESC>
 nmap <C-n> :NERDTreeToggle<CR>
@@ -77,8 +89,6 @@ set shiftwidth=2
 " always uses spaces instead of tab characters
 set expandtab
 
-" colorscheme gruvbox
-colorscheme gruvbox
 
 " sync open file with NERDTree
 " " Check if NERDTree is open or active
@@ -99,7 +109,7 @@ endfunction
 " autocmd BufEnter * call SyncTree()
 
 " coc config
-let g:coc_global_extensions = ['coc-python', 'coc-eslint', 'coc-prettier']
+let g:coc_global_extensions = ['coc-python']
 "  \ 'coc-snippets',
 "  \ 'coc-pairs',
 "  \ 'coc-tsserver',
@@ -119,10 +129,10 @@ set signcolumn=yes
 
 " Use tab for trigger completion with characters ahead and navigate.
 " Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
+"inoremap <silent><expr> <TAB>
+"      \ pumvisible() ? "\<C-n>" :
+"      \ <SID>check_back_space() ? "\<TAB>" :
+"      \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 function! s:check_back_space() abort
@@ -248,7 +258,6 @@ set ignorecase
 set smartcase
 set hlsearch
 set backspace=2
-set laststatus=2
 
 autocmd FileType python setl tabstop=4|setl shiftwidth=4|setl softtabstop=4
 autocmd FileType html setl tabstop=2|setl shiftwidth=2|setl softtabstop=2
@@ -270,30 +279,67 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
-autocmd QuickFixCmdPost *grep* cwindow | resize 25
 
 " Mappings
-:nnoremap <Leader>s :vsplit\|Ggrep <C-R><C-W><CR>
-:nnoremap <Leader>g :vsplit\|Ggrep<Space>
+"
+:nnoremap <Leader>1 :colorscheme molokai<CR>
+:nnoremap <Leader>2 :colorscheme gruvbox<CR>
+:nnoremap <Leader>3 :colorscheme palenight<CR>
+:nnoremap <Leader>4 :colorscheme jellybeans<CR>
+:nnoremap <Leader>5 :colorscheme OceanicNext<CR>
+
+:nnoremap <Leader>s :tab\|Ggrep <C-R><C-W><CR>
+:nnoremap <Leader>g :tab\|Ggrep<Space>
 :vnoremap <Leader>v "jy:tab\|Ggrep "<C-R>j"<CR>
 :nnoremap <Leader>b :Gblame<CR>
 :nnoremap <Leader>l :Glog<CR>
 :nnoremap <Leader>. :TagbarToggle<CR>
 :nnoremap <Leader>p oimport pudb; pudb.set_trace()<Esc>
 :nnoremap <Leader>f :NERDTreeFind<CR>
+:nnoremap <Leader>t :TestNearest<CR>
+:nnoremap <Leader>c :.cc<CR>
+:nnoremap <Leader>o :copen 20<CR>
+
 
 let g:ale_fixers = {}
-let g:ale_fixers.javascript = ['eslint', 'prettier']
+let g:ale_fixers.javascript = ['prettier']
+let g:ale_fixers.scss = ['prettier']
 let g:ale_fix_on_save = 1
 
 " set statusline+=%#warningmsg#
 " set statusline+=%*
-" set statusline+=%F
+set statusline+=%F
 set tags^=./.git/tags
 set cursorline
+set laststatus=2
 
-hi Search cterm=NONE ctermfg=black ctermbg=green
+hi Search       cterm=NONE ctermfg=black ctermbg=yellow
+hi Visual       cterm=NONE ctermfg=black ctermbg=yellow
+hi CursorLine   cterm=NONE ctermbg=darkblue ctermfg=NONE guibg=darkred guifg=white
 
 let g:python_host_prog = '/usr/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'
 let g:omni_sql_no_default_maps = 1
+
+let g:lightline = {
+      \ 'component_function': {
+      \   'filename': 'LightlineFilename',
+      \ }
+      \ }
+
+function! LightlineFilename()
+  let root = fnamemodify(get(b:, 'git_dir'), ':h')
+  let path = expand('%:p')
+  if path[:len(root)-1] ==# root
+    return path[len(root)+1:]
+  endif
+  return expand('%')
+endfunction
+
+function! EchoStrategy(cmd)
+  execute "!workon moes && " . a:cmd
+endfunction
+
+let g:test#custom_strategies = {'echo': function('EchoStrategy')}
+let g:test#strategy = 'echo'
+let g:deoplete#enable_at_startup = 1

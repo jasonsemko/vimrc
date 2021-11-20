@@ -1,9 +1,9 @@
 " Specify a directory for plugins
 call plug#begin('~/.vim/plugged')
 
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdtree'
+"Plug 'scrooloose/syntastic'
 "Plug 'tsony-tsonev/nerdtree-git-plugin'
 "Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'itchyny/lightline.vim'
@@ -14,10 +14,12 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
 Plug 'kchmck/vim-coffee-script'
+Plug 'leafgarland/typescript-vim'
 Plug 'dense-analysis/ale'
 Plug 'ap/vim-css-color'
 Plug 'janko/vim-test'
 Plug 'pangloss/vim-javascript'
+Plug 'rodjek/vim-puppet'
 " Plug 'ycm-core/YouCompleteMe'
 
 " COLORS
@@ -109,7 +111,7 @@ endfunction
 " autocmd BufEnter * call SyncTree()
 
 " coc config
-let g:coc_global_extensions = ['coc-python']
+let g:coc_global_extensions = ['coc-python', 'coc-tsserver']
 "  \ 'coc-snippets',
 "  \ 'coc-pairs',
 "  \ 'coc-tsserver',
@@ -271,7 +273,7 @@ let g:NERDTreeNodeDelimiter = "\u00a0"
 
 set colorcolumn=100
 " set statusline=%{fugitive#statusline()} - this wasn't show the file name
-highlight ColorColumn ctermbg=2*
+" highlight ColorColumn ctermbg=2*
 
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
@@ -310,12 +312,12 @@ let g:ale_fix_on_save = 1
 " set statusline+=%*
 set statusline+=%F
 set tags^=./.git/tags
-set cursorline
+" set cursorline
 set laststatus=2
 
 hi Search       cterm=NONE ctermfg=black ctermbg=yellow
 hi Visual       cterm=NONE ctermfg=black ctermbg=yellow
-hi CursorLine   cterm=NONE ctermbg=darkblue ctermfg=NONE guibg=darkred guifg=white
+" hi CursorLine   cterm=NONE ctermbg=darkblue ctermfg=NONE guibg=darkred guifg=white
 
 let g:python_host_prog = '/usr/bin/python'
 let g:python3_host_prog = '/usr/local/bin/python3'

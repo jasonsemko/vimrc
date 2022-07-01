@@ -20,9 +20,14 @@ Plug 'ap/vim-css-color'
 Plug 'janko/vim-test'
 Plug 'pangloss/vim-javascript'
 Plug 'rodjek/vim-puppet'
+Plug 'digitaltoad/vim-pug'
 " Plug 'ycm-core/YouCompleteMe'
 
 " COLORS
+Plug 'ryanoasis/vim-devicons'
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+Plug 'dracula/vim'
 Plug 'morhetz/gruvbox'
 Plug 'tomasr/molokai'
 Plug 'drewtempelmeyer/palenight.vim'
@@ -30,13 +35,21 @@ Plug 'nanotech/jellybeans.vim'
 Plug 'mhartington/oceanic-next'
 Plug 'ParamagicDev/vim-medic_chalk'
 
+
 Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 "Plug 'prettier/vim-prettier', { 'do': 'yarn install' }
 
 " Initialize plugin system
 call plug#end()
 
-colorscheme medic_chalk
+" color schemes
+if (has("termguicolors"))
+ set termguicolors
+endif
+syntax enable
+" colorscheme evening
+colorscheme dracula
+"colorscheme medic_chalk
 set background=dark
 
 inoremap jk <ESC>
@@ -83,7 +96,8 @@ let g:NERDTreeIgnore = ['^node_modules$']
 let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
 
 set number
-
+set nocompatible            " disable compatibility to old-time vi
+set showmatch               " show matching 
 set smarttab
 set cindent
 set tabstop=2
@@ -143,7 +157,7 @@ function! s:check_back_space() abort
 endfunction
 
 inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+inoremap <expr> <S-Tab> umvisible() ? "\<C-p>" : "\<S-Tab>"
 " Use <c-space> to trigger completion.
 " inoremap <silent><expr> <c-space> coc#refresh()
 
@@ -260,6 +274,7 @@ set ignorecase
 set smartcase
 set hlsearch
 set backspace=2
+set autoindent
 
 autocmd FileType python setl tabstop=4|setl shiftwidth=4|setl softtabstop=4
 autocmd FileType html setl tabstop=2|setl shiftwidth=2|setl softtabstop=2
@@ -320,7 +335,7 @@ hi Visual       cterm=NONE ctermfg=black ctermbg=yellow
 " hi CursorLine   cterm=NONE ctermbg=darkblue ctermfg=NONE guibg=darkred guifg=white
 
 let g:python_host_prog = '/usr/bin/python'
-let g:python3_host_prog = '/usr/local/bin/python3'
+let g:python3_host_prog = '/usr/bin/python3'
 let g:omni_sql_no_default_maps = 1
 
 let g:lightline = {

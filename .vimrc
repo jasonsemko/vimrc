@@ -8,11 +8,11 @@ Plug 'scrooloose/nerdtree'
 "Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'itchyny/lightline.vim'
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'ryanoasis/vim-devicons'
 Plug 'airblade/vim-gitgutter'
 
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-unimpaired'
+Plug 'derekwyatt/vim-scala'
 Plug 'kchmck/vim-coffee-script'
 Plug 'leafgarland/typescript-vim'
 Plug 'dense-analysis/ale'
@@ -21,6 +21,7 @@ Plug 'janko/vim-test'
 Plug 'pangloss/vim-javascript'
 Plug 'rodjek/vim-puppet'
 Plug 'digitaltoad/vim-pug'
+Plug 'sbdchd/neoformat'
 " Plug 'ycm-core/YouCompleteMe'
 
 " COLORS
@@ -43,9 +44,9 @@ Plug 'ctrlpvim/ctrlp.vim' " fuzzy find files
 call plug#end()
 
 " color schemes
-if (has("termguicolors"))
- set termguicolors
-endif
+"if (has("termguicolors"))
+" set termguicolors
+"endif
 syntax enable
 " colorscheme evening
 colorscheme dracula
@@ -360,3 +361,4 @@ endfunction
 let g:test#custom_strategies = {'echo': function('EchoStrategy')}
 let g:test#strategy = 'echo'
 let g:deoplete#enable_at_startup = 1
+set encoding=UTF-8
